@@ -1,0 +1,22 @@
+services:
+  caddy:
+    container_name: caddy
+    image: ghcr.io/ilvice26/caddy-cloudflare-tcp-udp:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - /var/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /var/docker/caddy/site:/srv
+      - /var/docker/caddy/caddy_data:/data
+      - /var/docker/caddy/caddy_config:/config
+    env_file:
+      - stack.env
